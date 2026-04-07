@@ -231,6 +231,22 @@ Le statut final des clubs est représenté dans `team_season_status`.
 
 ---
 
+## 3. Hypothèses et limites du modèle
+Le projet porte uniquement sur la saison 2024/2025 de la Premier League.
+
+Le modèle :
+- inclut les équipes, stades, matchs, joueurs, statistiques individuelles et statut final des équipes ;
+- n’inclut pas les entraîneurs ;
+- n’inclut pas les arbitres ;
+- n’inclut pas les événements minute par minute ;
+- n’inclut pas les blessures ;
+- n’inclut pas les transferts ;
+- n’inclut pas les autres compétitions nationales.
+
+Les meilleurs buteurs et les meilleurs passeurs décisifs seront obtenus à partir de requêtes SQL sur les statistiques individuelles des joueurs, et non nécessairement à partir de tables indépendantes.
+
+---
+
 ## 4. Diagramme conceptuel simplifié
 
 ```mermaid

@@ -51,10 +51,14 @@ Cette restriction permet de construire un modèle relationnel clair, cohérent e
 Les principaux choix de modélisation retenus sont les suivants :
 
 - les résultats des matchs sont stockés directement dans la table `matches` à l’aide des attributs `home_goals` et `away_goals` ;
-- les meilleurs buteurs et les meilleurs passeurs décisifs ne sont pas stockés dans des tables séparées ;
+- aucune table séparée n’est créée pour les résultats, car le score fait partie intégrante de l’entité `matches` ;
+- les meilleurs buteurs et les meilleurs passeurs décisifs ne sont pas stockés dans des tables spécifiques ;
 - ces informations sont obtenues par des requêtes SQL à partir de la table `player_season_stats` ;
-- le statut final des équipes est représenté dans `team_season_status` ;
-- les tables `player_season_stats` et `team_season_status` reposent sur une logique de dépendance à la saison.
+- la table `player_season_stats` modélise des statistiques dépendant à la fois d’un joueur et d’une saison, ce qui justifie l’utilisation d’une clé primaire composée (`player_id`, `season_id`) ;
+- le statut final des équipes en fin de saison est représenté par la vue `team_season_status` ;
+- cette vue est calculée à partir des résultats des matchs enregistrés dans `matches`, ce qui évite la redondance et garantit la cohérence entre les résultats sportifs et le classement final ;
+- le projet est volontairement limité à la saison **2024/2025**, mais la présence de la table `seasons` permet de conserver une structure relationnelle propre et extensible ;
+- les relations entre les entités ont été conçues de manière à distinguer clairement les données descriptives (`teams`, `venues`, `players`) des données événementielles (`matches`) et des données statistiques (`player_season_stats`).
 
 ---
 
@@ -69,7 +73,7 @@ Le schéma relationnel intègre plusieurs contraintes afin de garantir la cohér
 - le contrôle des valeurs autorisées pour `match_status` ;
 - l’obligation de renseigner les scores lorsqu’un match est marqué comme `finished` ;
 - l’interdiction des statistiques négatives dans `player_season_stats` ;
-- une cohérence logique des valeurs de `team_season_status`.
+- cohérence logique du statut final des équipes, obtenu à partir des résultats enregistrés dans la base.
 
 ---
 

@@ -1,109 +1,136 @@
-# Premier League 2024/2025 Database Project
+# Projet SQL – Base de données de la Premier League 2024/2025
 
 ## Présentation du projet
 
 Ce projet a été réalisé dans le cadre du cours **Data Infrastructure and Introduction to Data Science**.
 
-L’objectif est de concevoir une **base de données relationnelle en SQL** consacrée à la **Premier League anglaise**, limitée à la **saison 2024/2025**, afin de stocker et interroger des informations sur :
+Il consiste à concevoir une **base de données relationnelle en SQL** dédiée à la **Premier League anglaise**, en se limitant volontairement à la **saison 2024/2025**.
 
-- les équipes
-- les stades
-- les matchs
-- les résultats
-- les joueurs
-- les statistiques individuelles de saison des joueurs
-- le statut final des équipes en fin de saison
+L’objectif est de stocker, organiser et interroger des informations relatives à :
 
-Cette base permet ensuite d’effectuer plusieurs analyses, comme la consultation des matchs d’une équipe, l’identification des meilleurs buteurs et passeurs, ou encore la détection des équipes qualifiées pour les compétitions européennes et des équipes reléguées.
+- les équipes ;
+- les stades ;
+- les matchs ;
+- les résultats ;
+- les joueurs ;
+- les statistiques individuelles de saison des joueurs ;
+- le statut final des équipes en fin de saison.
 
----
-
-## Objectifs de la base
-
-La base a été construite pour répondre aux besoins suivants :
-
-- retrouver les matchs d’une équipe donnée
-- consulter les résultats des matchs
-- identifier les meilleurs buteurs
-- identifier les meilleurs passeurs décisifs
-- identifier les équipes qualifiées pour la Champions League
-- identifier les équipes qualifiées pour l’Europa League
-- identifier les équipes qualifiées pour la Conference League
-- identifier les équipes reléguées
+Cette base a été conçue pour répondre à des besoins de consultation et d’analyse cohérents avec l’énoncé du projet.
 
 ---
 
+## Objectifs du projet
 
-## Choix de modélisation
+La base de données permet notamment de :
 
-Plusieurs choix de modélisation ont été retenus :
+- retrouver les matchs d’une équipe donnée ;
+- consulter les résultats des matchs ;
+- identifier les meilleurs buteurs ;
+- identifier les meilleurs passeurs décisifs ;
+- identifier les équipes qualifiées pour la Champions League ;
+- identifier les équipes qualifiées pour l’Europa League ;
+- identifier les équipes qualifiées pour la Conference League ;
+- identifier les équipes reléguées.
 
-- les **résultats des matchs** sont stockés directement dans la table `matches` via `home_goals` et `away_goals`
-- les **meilleurs buteurs** et **meilleurs passeurs** sont obtenus par requêtes SQL sur la table `player_season_stats`
-- le **statut final des équipes** est stocké dans `team_season_status`
-- les tables `player_season_stats` et `team_season_status` utilisent une **clé primaire composée** afin de modéliser des informations dépendant à la fois d’une entité et d’une saison
+---
+
+## Périmètre du projet
+
+Le projet est volontairement limité à une seule saison : **2024/2025**.
+
+Cette restriction permet de construire un modèle relationnel clair, cohérent et adapté aux objectifs pédagogiques du cours, tout en conservant une logique de dépendance à la saison pour certaines informations, notamment :
+
+- les statistiques individuelles des joueurs ;
+- le statut final des équipes en fin de saison.
+
+---
+
+## Principes de modélisation
+
+Les principaux choix de modélisation retenus sont les suivants :
+
+- les résultats des matchs sont stockés directement dans la table `matches` à l’aide des attributs `home_goals` et `away_goals` ;
+- les meilleurs buteurs et les meilleurs passeurs décisifs ne sont pas stockés dans des tables séparées ;
+- ces informations sont obtenues par des requêtes SQL à partir de la table `player_season_stats` ;
+- le statut final des équipes est représenté dans `team_season_status` ;
+- les tables `player_season_stats` et `team_season_status` reposent sur une logique de dépendance à la saison.
 
 ---
 
 ## Contraintes d’intégrité
 
-Le projet inclut plusieurs contraintes pour garantir la cohérence des données :
+Le schéma relationnel intègre plusieurs contraintes afin de garantir la cohérence des données, notamment :
 
-- clés primaires sur toutes les tables
-- clés étrangères entre les tables liées
-- impossibilité d’avoir la même équipe à domicile et à l’extérieur dans un match
-- impossibilité d’avoir des buts négatifs
-- contrôle des valeurs possibles de `match_status`
-- obligation d’avoir des scores renseignés lorsque le match est marqué comme `finished`
-- contraintes sur les statistiques individuelles pour empêcher des valeurs négatives
-- contraintes logiques sur `team_season_status` pour contrôler les statuts booléens
+- une clé primaire pour chaque table ;
+- des clés étrangères entre les tables liées ;
+- l’impossibilité d’avoir la même équipe à domicile et à l’extérieur pour un même match ;
+- l’interdiction des valeurs négatives pour les buts ;
+- le contrôle des valeurs autorisées pour `match_status` ;
+- l’obligation de renseigner les scores lorsqu’un match est marqué comme `finished` ;
+- l’interdiction des statistiques négatives dans `player_season_stats` ;
+- une cohérence logique des valeurs de `team_season_status`.
 
 ---
 
-## Fichiers du projet
+## Structure du projet
 
-Le projet est structuré autour des fichiers suivants :
+Le dépôt est organisé autour des fichiers suivants :
+
+- `README.md`  
+  Présentation générale du projet, de son objectif, de son périmètre et des sources mobilisées.
+
+- `DESIGN.md`  
+  Description du modèle relationnel, des entités, des relations, des choix de conception et des limites du projet.
 
 - `schema.sql`  
-  Contient la création complète du schéma relationnel
+  Création des tables, des clés primaires, des clés étrangères et des contraintes d’intégrité.
 
 - `seed.sql`  
-  Contient l’insertion des données
+  Insertion des données dans la base.
 
 - `queries.sql`  
-  Contient les principales requêtes d’analyse
+  Requêtes de manipulation des données (`INSERT`, `UPDATE`, `DELETE`).
+
+- `analysis.sql`  
+  Requêtes d’analyse (`SELECT`, `JOIN`, `GROUP BY`, `HAVING`, etc.) permettant de répondre aux questions posées par le projet.
 
 ---
 
-## Provenance et mode de chargement des données
+## Sources de données
 
-Les données n’ont pas été chargées par un import automatique complet de plusieurs fichiers CSV vers les tables finales de la base.
+Le projet s’appuie sur des sources publiques et gratuites cohérentes avec le sujet traité, notamment :
 
-Dans la version finale du projet, le peuplement de la base a été réalisé à l’aide d’un fichier `seed.sql`, contenant des instructions `INSERT INTO` adaptées au schéma relationnel construit dans `schema.sql`.
+- **football-data.org**
+- **site officiel de la Premier League**
+- **football-data.co.uk**
 
-Le processus suivi a été le suivant :
+Ces sources ont servi de base de travail pour constituer les données utilisées dans le projet.
 
-- création manuelle du schéma relationnel dans `schema.sql`
-- structuration des données sous une forme compatible avec ce schéma
-- insertion des données dans la base via `seed.sql`
+Les matchs de Premier League 2024/2025 ont été préparés à partir d’une source publique de type CSV, puis adaptés au schéma relationnel retenu. Les informations concernant les équipes, les stades et le statut final des équipes ont été organisées de manière cohérente à partir de sources publiques. Les tables `players` et `player_season_stats` contiennent un jeu de données concret permettant de réaliser les analyses attendues, sans prétendre à l’exhaustivité complète de tous les joueurs de la saison.
 
-Concernant la provenance des données :
-
-- les matchs de la saison 2024/2025 ont été préparés à partir d’une source publique de type CSV utilisée comme base de travail
-- les informations sur les équipes, les stades et le statut final des équipes ont été organisées manuellement à partir de sources publiques
-- les tables `players` et `player_season_stats` contiennent un jeu de données concret mais non exhaustif, construit pour permettre les analyses demandées dans le projet
-
-Ainsi, la base finale repose sur un **chargement via fichier SQL (`seed.sql`)** et non sur un import brut direct des fichiers sources dans les tables finales.
-
-Certaines étapes de structuration, d’organisation et de rédaction du contenu SQL ont été réalisées avec l’assistance d’un LLM, puis vérifiées et intégrées dans le projet.
 ---
 
-## Chargement de la base
+## Mode de chargement des données
+
+Le projet repose sur un **peuplement via fichier SQL (`seed.sql`)** et non sur un import brut direct des fichiers sources dans les tables finales.
+
+Le processus suivi est le suivant :
+
+1. création du schéma relationnel dans `schema.sql` ;
+2. préparation et structuration des données dans un format compatible avec ce schéma ;
+3. insertion des données via `seed.sql` ;
+4. exécution éventuelle de requêtes de manipulation dans `queries.sql` ;
+5. exécution des requêtes d’analyse dans `analysis.sql`.
+
+---
+
+## Ordre d’exécution recommandé
 
 L’ordre d’exécution recommandé est le suivant :
 
-### 1. Créer les tables
-Exécuter :
-
 ```sql
 .read schema.sql
+.read seed.sql
+.read queries.sql
+.read analysis.sql

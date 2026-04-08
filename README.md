@@ -33,83 +33,6 @@ La base a été construite pour répondre aux besoins suivants :
 
 ---
 
-## Modèle relationnel
-
-Le schéma repose sur les tables suivantes :
-
-### 1. `seasons`
-Contient les informations générales sur la saison.
-
-**Attributs**
-- `season_id`
-- `season_label`
-- `start_date`
-- `end_date`
-
-### 2. `teams`
-Contient les équipes de Premier League.
-
-**Attributs**
-- `team_id`
-- `team_name`
-- `city`
-- `country`
-
-### 3. `venues`
-Contient les stades.
-
-**Attributs**
-- `venue_id`
-- `venue_name`
-- `city`
-- `capacity`
-
-### 4. `players`
-Contient les joueurs.
-
-**Attributs**
-- `player_id`
-- `player_name`
-- `team_id`
-- `position`
-- `nationality`
-
-### 5. `matches`
-Contient les matchs de la saison.
-
-**Attributs**
-- `match_id`
-- `season_id`
-- `match_date`
-- `venue_id`
-- `home_team_id`
-- `away_team_id`
-- `home_goals`
-- `away_goals`
-- `match_status`
-
-### 6. `player_season_stats`
-Contient les statistiques individuelles de saison des joueurs.
-
-**Attributs**
-- `player_id`
-- `season_id`
-- `goals`
-- `assists`
-- `appearances`
-
-### 7. `team_season_status`
-Contient le statut final d’une équipe pour une saison donnée.
-
-**Attributs**
-- `team_id`
-- `season_id`
-- `qualified_champions_league`
-- `qualified_europa_league`
-- `qualified_conference_league`
-- `relegated`
-
----
 
 ## Choix de modélisation
 
@@ -152,15 +75,27 @@ Le projet est structuré autour des fichiers suivants :
 
 ---
 
-## Provenance des données
+## Provenance et mode de chargement des données
 
-Les données utilisées dans ce projet ont été **structurées dans un fichier `seed.sql`** pour les besoins du projet académique.
+Les données n’ont pas été chargées par un import automatique complet de plusieurs fichiers CSV vers les tables finales de la base.
 
-Elles correspondent à la **saison 2024/2025 de Premier League**.  
-Les informations ont été **sélectionnées, organisées et intégrées manuellement** dans la base à partir de sources publiques et d’un travail de structuration adapté aux besoins du modèle relationnel.
+Dans la version finale du projet, le peuplement de la base a été réalisé à l’aide d’un fichier `seed.sql`, contenant des instructions `INSERT INTO` adaptées au schéma relationnel construit dans `schema.sql`.
 
-Le jeu de données utilisé dans `players` et `player_season_stats` est un **jeu de données concret mais non exhaustif**, conçu pour permettre les principales analyses demandées dans le projet sans nécessairement reproduire l’intégralité des effectifs de la ligue.
+Le processus suivi a été le suivant :
 
+- création manuelle du schéma relationnel dans `schema.sql`
+- structuration des données sous une forme compatible avec ce schéma
+- insertion des données dans la base via `seed.sql`
+
+Concernant la provenance des données :
+
+- les matchs de la saison 2024/2025 ont été préparés à partir d’une source publique de type CSV utilisée comme base de travail
+- les informations sur les équipes, les stades et le statut final des équipes ont été organisées manuellement à partir de sources publiques
+- les tables `players` et `player_season_stats` contiennent un jeu de données concret mais non exhaustif, construit pour permettre les analyses demandées dans le projet
+
+Ainsi, la base finale repose sur un **chargement via fichier SQL (`seed.sql`)** et non sur un import brut direct des fichiers sources dans les tables finales.
+
+Certaines étapes de structuration, d’organisation et de rédaction du contenu SQL ont été réalisées avec l’assistance d’un LLM, puis vérifiées et intégrées dans le projet.
 ---
 
 ## Chargement de la base

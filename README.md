@@ -1,84 +1,174 @@
-# Base de données SQL de la Premier League anglaise (saison 2024/2025)
+# Premier League 2024/2025 Database Project
 
-## Sujet du projet
-Ce projet consiste à concevoir et implémenter une base de données relationnelle en SQL sur la Premier League anglaise, en se limitant à la saison 2024/2025.
+## Présentation du projet
 
-## Contexte
-La Premier League est l’un des championnats de football les plus suivis au monde. Une saison produit de nombreuses données : équipes, stades, matchs, résultats, statistiques individuelles des joueurs, qualifications européennes et relégation.
+Ce projet a été réalisé dans le cadre du cours **Data Infrastructure and Introduction to Data Science**.
 
-L’objectif de ce projet est de structurer ces informations dans une base de données relationnelle afin de permettre leur stockage, leur organisation et leur analyse à l’aide de requêtes SQL.
+L’objectif est de concevoir une **base de données relationnelle en SQL** consacrée à la **Premier League anglaise**, limitée à la **saison 2024/2025**, afin de stocker et interroger des informations sur :
 
-## Objectif du projet
-La base de données doit permettre de :
-- stocker les équipes participant à la saison 2024/2025 ;
-- stocker les stades associés ;
-- enregistrer les matchs joués et leurs résultats ;
-- stocker les joueurs et certaines statistiques individuelles de saison ;
-- identifier les meilleurs buteurs et les meilleurs passeurs décisifs ;
-- indiquer quelles équipes sont qualifiées pour la Champions League, l’Europa League et la Conference League pour la saison suivante ;
-- indiquer quelles équipes sont reléguées à la fin de la saison.
+- les équipes
+- les stades
+- les matchs
+- les résultats
+- les joueurs
+- les statistiques individuelles de saison des joueurs
+- le statut final des équipes en fin de saison
 
-## Problème que la base résout
-Sans base de données relationnelle, les informations sur un championnat sont souvent dispersées entre plusieurs pages web, fichiers CSV ou tableaux, ce qui rend difficile :
-- le suivi structuré des matchs ;
-- la consultation des résultats par équipe ;
-- l’analyse des performances individuelles ;
-- l’identification rapide des meilleurs buteurs ;
-- l’identification rapide des meilleurs passeurs décisifs ;
-- l’analyse de la qualification européenne et de la relégation.
+Cette base permet ensuite d’effectuer plusieurs analyses, comme la consultation des matchs d’une équipe, l’identification des meilleurs buteurs et passeurs, ou encore la détection des équipes qualifiées pour les compétitions européennes et des équipes reléguées.
 
-Cette base permet donc de centraliser les données et de répondre à des questions sportives et analytiques avec SQL.
+---
 
-## Utilisateurs cibles
-Cette base pourrait être utilisée par :
-- un analyste sportif ;
-- un journaliste sportif ;
-- un étudiant en data science ou en SQL ;
-- un observateur souhaitant analyser une saison de Premier League.
+## Objectifs de la base
 
-## Périmètre du projet
-Le projet porte uniquement sur la saison 2024/2025 de la Premier League anglaise.
+La base a été construite pour répondre aux besoins suivants :
 
-Le projet inclut :
-- les saisons ;
-- les équipes ;
-- les stades ;
-- les matchs ;
-- les résultats ;
-- les joueurs ;
-- les statistiques individuelles de saison ;
-- les statuts de fin de saison des équipes.
+- retrouver les matchs d’une équipe donnée
+- consulter les résultats des matchs
+- identifier les meilleurs buteurs
+- identifier les meilleurs passeurs décisifs
+- identifier les équipes qualifiées pour la Champions League
+- identifier les équipes qualifiées pour l’Europa League
+- identifier les équipes qualifiées pour la Conference League
+- identifier les équipes reléguées
 
-## Sources de données
-Les données de ce projet proviendront principalement de sources publiques et gratuites permettant de récupérer les informations sur la saison 2024/2025 de Premier League.
+---
 
-Sources envisagées :
-- football-data.org, comme source principale pour les compétitions, équipes, matchs, résultats et certaines statistiques ;
-- le site officiel de la Premier League, comme source de vérification pour les statistiques de joueurs, notamment les buts et les passes décisives ;
-- football-data.co.uk, comme source complémentaire éventuelle pour l’import de résultats via fichiers CSV.
+## Modèle relationnel
 
-La provenance exacte des données utilisées sera précisée dans le projet, ainsi que la méthode de collecte retenue (API, CSV ou saisie manuelle complémentaire).
+Le schéma repose sur les tables suivantes :
 
-## Organisation du dépôt
-Le projet contiendra les fichiers suivants :
+### 1. `seasons`
+Contient les informations générales sur la saison.
 
-- `README.md` : présentation générale du projet ;
-- `DESIGN.md` : description du modèle de données, des entités, des relations et des choix de conception ;
-- `schema.sql` : création des tables, contraintes et clés ;
-- `seed.sql` : insertion des données ;
-- `queries.sql` : requêtes SQL simulant des usages courants de la base ;
-- `analysis.sql` : requêtes SQL d’analyse ;
-- `data/` : fichiers de données éventuels.
+**Attributs**
+- `season_id`
+- `season_label`
+- `start_date`
+- `end_date`
 
-## Résultats attendus
-À la fin du projet, la base devra permettre de :
-- retrouver tous les matchs d’une équipe ;
-- consulter les résultats de la saison ;
-- classer les joueurs par nombre de buts ;
-- classer les joueurs par nombre de passes décisives ;
-- identifier les équipes qualifiées pour les compétitions européennes ;
-- identifier les équipes reléguées ;
-- produire des analyses sportives simples à l’aide de SQL.
+### 2. `teams`
+Contient les équipes de Premier League.
 
-## Remarque méthodologique
-Les tables représentant les meilleurs buteurs et les meilleurs passeurs décisifs ne seront pas nécessairement stockées comme tables indépendantes. Elles pourront être obtenues à partir de requêtes sur la table `player_season_stats`, ce qui correspond à une modélisation relationnelle plus propre et plus flexible.
+**Attributs**
+- `team_id`
+- `team_name`
+- `city`
+- `country`
+
+### 3. `venues`
+Contient les stades.
+
+**Attributs**
+- `venue_id`
+- `venue_name`
+- `city`
+- `capacity`
+
+### 4. `players`
+Contient les joueurs.
+
+**Attributs**
+- `player_id`
+- `player_name`
+- `team_id`
+- `position`
+- `nationality`
+
+### 5. `matches`
+Contient les matchs de la saison.
+
+**Attributs**
+- `match_id`
+- `season_id`
+- `match_date`
+- `venue_id`
+- `home_team_id`
+- `away_team_id`
+- `home_goals`
+- `away_goals`
+- `match_status`
+
+### 6. `player_season_stats`
+Contient les statistiques individuelles de saison des joueurs.
+
+**Attributs**
+- `player_id`
+- `season_id`
+- `goals`
+- `assists`
+- `appearances`
+
+### 7. `team_season_status`
+Contient le statut final d’une équipe pour une saison donnée.
+
+**Attributs**
+- `team_id`
+- `season_id`
+- `qualified_champions_league`
+- `qualified_europa_league`
+- `qualified_conference_league`
+- `relegated`
+
+---
+
+## Choix de modélisation
+
+Plusieurs choix de modélisation ont été retenus :
+
+- les **résultats des matchs** sont stockés directement dans la table `matches` via `home_goals` et `away_goals`
+- les **meilleurs buteurs** et **meilleurs passeurs** sont obtenus par requêtes SQL sur la table `player_season_stats`
+- le **statut final des équipes** est stocké dans `team_season_status`
+- les tables `player_season_stats` et `team_season_status` utilisent une **clé primaire composée** afin de modéliser des informations dépendant à la fois d’une entité et d’une saison
+
+---
+
+## Contraintes d’intégrité
+
+Le projet inclut plusieurs contraintes pour garantir la cohérence des données :
+
+- clés primaires sur toutes les tables
+- clés étrangères entre les tables liées
+- impossibilité d’avoir la même équipe à domicile et à l’extérieur dans un match
+- impossibilité d’avoir des buts négatifs
+- contrôle des valeurs possibles de `match_status`
+- obligation d’avoir des scores renseignés lorsque le match est marqué comme `finished`
+- contraintes sur les statistiques individuelles pour empêcher des valeurs négatives
+- contraintes logiques sur `team_season_status` pour contrôler les statuts booléens
+
+---
+
+## Fichiers du projet
+
+Le projet est structuré autour des fichiers suivants :
+
+- `schema.sql`  
+  Contient la création complète du schéma relationnel
+
+- `seed.sql`  
+  Contient l’insertion des données
+
+- `queries.sql`  
+  Contient les principales requêtes d’analyse
+
+---
+
+## Provenance des données
+
+Les données utilisées dans ce projet ont été **structurées dans un fichier `seed.sql`** pour les besoins du projet académique.
+
+Elles correspondent à la **saison 2024/2025 de Premier League**.  
+Les informations ont été **sélectionnées, organisées et intégrées manuellement** dans la base à partir de sources publiques et d’un travail de structuration adapté aux besoins du modèle relationnel.
+
+Le jeu de données utilisé dans `players` et `player_season_stats` est un **jeu de données concret mais non exhaustif**, conçu pour permettre les principales analyses demandées dans le projet sans nécessairement reproduire l’intégralité des effectifs de la ligue.
+
+---
+
+## Chargement de la base
+
+L’ordre d’exécution recommandé est le suivant :
+
+### 1. Créer les tables
+Exécuter :
+
+```sql
+.read schema.sql

@@ -170,21 +170,7 @@ Grâce au schéma et aux requêtes fournies, la base permet par exemple de répo
 
 ---
 
-## 9. Limites du projet
-
-Ce projet reste volontairement simple et présente plusieurs limites :
-
-- il est limité à la **saison 2024/2025** ;
-- la table `teams` reste une table stable de clubs, ce qui montre les limites du modèle pour gérer proprement le passage d’une saison à l’autre ;
-- dans une version plus avancée, une table intermédiaire comme `season_teams` serait utile pour modéliser la participation des équipes selon les saisons ;
-- le modèle ne prend pas en compte les arbitres, les blessures, les cartons, les remplacements ou les compositions d’équipe ;
-- les données joueurs ne sont **pas exhaustives** : elles ont été retenues principalement pour permettre des analyses pertinentes dans le cadre du projet.
-
-Ces limites sont assumées et cohérentes avec l’objectif pédagogique du cours.
-
----
-
-## 10. Ordre d’exécution recommandé
+## 9. Ordre d’exécution recommandé
 
 L’ordre d’exécution recommandé est le suivant :
 

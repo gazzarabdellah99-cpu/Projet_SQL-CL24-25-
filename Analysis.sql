@@ -34,7 +34,7 @@ WHERE m.match_status = 'finished'
 ORDER BY m.match_date, th.team_name;
 
 -- ---------------------------------------------------------
--- 5. Consulter les résultats d’une équipe 'Liverpool'
+-- Consulter les résultats d’une équipe 'Liverpool'
 -- ---------------------------------------------------------
 SELECT 
     m.match_date,
@@ -87,7 +87,7 @@ ORDER BY pss.goals DESC, p.player_name
 LIMIT 10;
 
 -- ---------------------------------------------------------
--- 8. Identifier les meilleurs passeurs décisifs
+-- Identifier les meilleurs passeurs décisifs
 -- ---------------------------------------------------------
 SELECT 
     p.player_name,
@@ -215,7 +215,7 @@ GROUP BY t.team_id, t.team_name
 ORDER BY goals_scored DESC, t.team_name;
 
 -- ---------------------------------------------------------
--- 17. Nombre total de buts encaissés par équipe
+-- Nombre total de buts encaissés par équipe
 -- ---------------------------------------------------------
 SELECT 
     t.team_name,
@@ -235,7 +235,7 @@ GROUP BY t.team_id, t.team_name
 ORDER BY goals_conceded ASC, t.team_name;
 
 -- ---------------------------------------------------------
--- 18. Exemple : voir toutes les informations d’un match précis
+-- Exemple : voir toutes les informations d’un match précis
 -- Remplacez 1 par le match_id voulu
 -- ---------------------------------------------------------
 SELECT 

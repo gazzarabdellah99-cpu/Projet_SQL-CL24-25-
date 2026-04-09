@@ -325,5 +325,7 @@ erDiagram
     TEAMS ||--o{ PLAYERS : has
     PLAYERS ||--o{ PLAYER_SEASON_STATS : records
     SEASONS ||--o{ PLAYER_SEASON_STATS : includes
-    TEAMS ||--o{ TEAM_SEASON_STATUS : has
-    SEASONS ||--o{ TEAM_SEASON_STATUS : includes
+
+    MATCHES }o--|| TEAM_SEASON_STATUS : determines
+    TEAMS ||--o{ TEAM_SEASON_STATUS : concerns
+    SEASONS ||--o{ TEAM_SEASON_STATUS : contextualizes
